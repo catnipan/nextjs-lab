@@ -7,7 +7,7 @@ const NoSSR = dynamic(
   { ssr: false }
 )
 
-export default function () {
+export default function Page() {
     return (
         <NoSSR>
             <App />
