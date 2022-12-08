@@ -5,21 +5,16 @@ import { lazy, Suspense, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRouter } from "next/router";
 import { useLocation } from "react-router-dom";
+import { Counter } from './Counter';
 
 const LazyLoadPage = lazy(() => import('./LazyLoadPage'))
 
-function Counter() {
-  const [count, setCount] = useState(0);
-  return (
-    <button onClick={() => setCount(x => x + 1)}>{count}</button>
-  )
-}
 
 export function App({ randomVal }) {
   return (
     <BrowserRouter basename="/spa">
       <div>
-        Random value from server: {randomVal}
+        Some value loaded from server: {randomVal}
         <hr />
         Client state: <Counter />
         <hr />

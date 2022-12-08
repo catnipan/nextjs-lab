@@ -16,6 +16,8 @@ export default function Home() {
       <main className={styles.main}>
         <Link href="spa">SPA</Link>
         <hr />
+        <Link href="spa2">SPA 2</Link>
+        <hr />
         <Link href="dynamic/[x]/inner" as="dynamic/12345/inner">link as</Link>
         <hr />
         <Link href="dynamic/12345/inner">link directly</Link>
