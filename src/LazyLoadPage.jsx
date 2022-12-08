@@ -1,10 +1,10 @@
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 
-export default function Dashboard() {
+export default function LazyLoadPage() {
   const navigate = useNavigate();
     return (
       <div>
-        <h2>Dashboard Page</h2>
+        <h2>LazyLoad Page with inner nested route</h2>
         <hr style={{width: '80%'}}/>
         <Routes>
             <Route index element={(
