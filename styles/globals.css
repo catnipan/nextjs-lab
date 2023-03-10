@@ -24,3 +24,7 @@ a {
     background: black;
   }
 }
+
+nav a.active {
+  color: red;
+}

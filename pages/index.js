@@ -15,23 +15,6 @@ export default function Home() {
 
       <main className={styles.main}>
         <Link href="spa">SPA</Link>
-        <hr />
-        <Link href="spa2">SPA 2</Link>
-        <hr />
-        <Link href="dynamic/[x]/inner" as="dynamic/12345/inner">link as</Link>
-        <hr />
-        <Link href="dynamic/12345/inner">link directly</Link>
-        <hr />
-        <button onClick={() => {
-          const x = Math.floor(Math.random() * 1000)
-          // router.push(`dynamic/${x}/inner`, 'some/url')
-          router.push('dynamic/[x]/inner', `dynamic/${x}/inner`)
-        }}>push as</button>
-        <hr />
-        <button onClick={() => {
-          const x = Math.floor(Math.random() * 1000)
-          router.push(`dynamic/${x}/inner`)
-        }}>push directly</button>
       </main>
 
     </div>
