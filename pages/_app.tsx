@@ -1,4 +1,3 @@
-import { NextPage } from 'next'
 import App from 'next/app';
 import '../styles/globals.css'
 

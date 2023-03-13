@@ -1,8 +1,10 @@
-import { Routes, Route, Outlet, Navigate, NavLink, useSearchParams } from "react-router-dom";
+import { Routes, Route, Outlet, Navigate, NavLink, useSearchParams, useLocation } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { atom, useAtomValue, useSetAtom } from 'jotai';
 import { loadable } from "jotai/utils"
+import Link from "next/link";
+import { locationAtom } from "./atom";
 
 
 const sleep = (n: number) => new Promise(resolve => setTimeout(resolve, n));
@@ -132,6 +134,8 @@ function AppLayout() {
         <NavLink to="setting">Setting</NavLink>
         {' | '}
         <NavLink to="notexist">NotExistPage</NavLink>
+        {' | '}
+        <Link href="/">Navigate outside App to Next.js page</Link>
       </nav>
       <hr />
       <Suspense fallback={<div>Loading Page</div>}>
@@ -194,6 +198,21 @@ function Accounts({ accounts }: { accounts: Account[] }) {
   )
 }
 
+function Root() {
+  const location = useLocation();
+  const setLocation = useSetAtom(locationAtom);
+  useEffect(() => {
+    setLocation(location.pathname)
+  }, [location.pathname]);
+  return (
+    <>
+      react-router-dom location: {JSON.stringify(location)}
+      <hr />
+      <Outlet />
+    </>
+  )
+}
+
 const Dashboard = lazy(() => sleep(500).then(() => import('./Dashboard')));
 const PerformanceLayout = lazy(() => sleep(500).then(() => import('./Performance')));
 const Setting = lazy(() => sleep(500).then(() => import('./Setting')));
@@ -202,25 +221,28 @@ export function App() {
   return (
     <BrowserRouter basename="/spa">
       <Routes>
-        <Route element={<Authed />}>
-          <Route element={<AppLayout />}>
-            <Route element={<ReportLayout />}>
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="performance" element={<PerformanceLayout />}>
-                <Route path="subpage1" element={<h2>Subpage1</h2>} />
-                <Route path="subpage2" element={<h2>Subpage2</h2>} />
-                <Route path="*" element={<Navigate to="subpage1" />} />
+        <Route element={<Root />}>
+          <Route element={<Authed />}>
+            <Route element={<AppLayout />}>
+              <Route element={<ReportLayout />}>
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="performance" element={<PerformanceLayout />}>
+                  <Route path="subpage1" element={<h2>Subpage1</h2>} />
+                  <Route path="subpage2" element={<h2>Subpage2</h2>} />
+                  <Route path="*" element={<Navigate to="subpage1" />} />
+                </Route>
               </Route>
+              <Route path="setting/*" element={<Setting />} />
+              <Route path="welcome" element={<h1>Welcome Page</h1>} />
+              <Route path="*" element={<h1>404 Not Found</h1>} />
             </Route>
-            <Route path="setting/*" element={<Setting />} />
-            <Route path="welcome" element={<h1>Welcome Page</h1>} />
-            <Route path="*" element={<h1>404 Not Found</h1>} />
+            <Route path="/" element={<Navigate to="dashboard" />} />
           </Route>
-          <Route path="/" element={<Navigate to="dashboard" />} />
+          <Route path="public" element={<UnAuthed />}>
+            <Route path="login" element={<Login />} />
+          </Route>
         </Route>
-        <Route path="public" element={<UnAuthed />}>
-          <Route path="login" element={<Login />} />
-        </Route>
+
       </Routes>
     </BrowserRouter>
   )
